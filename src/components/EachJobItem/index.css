@@ -1,0 +1,100 @@
+.job-item-container {
+  background-color: #272727;
+  padding: 20px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.job-link-item {
+  text-decoration: none;
+}
+
+.company-logo {
+  width: 40px;
+}
+.logo-title-rating-container {
+  display: flex;
+  align-items: center;
+}
+.title-rating-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 10px;
+}
+
+.company-name {
+  font-family: 'Roboto';
+  color: #ffffff;
+  font-size: 17px;
+  margin: 5px;
+  font-weight: 500;
+}
+
+.rating-container {
+  display: flex;
+  align-items: center;
+}
+
+.star-icon {
+  color: #fbbf24;
+}
+
+.rating-number {
+  color: #ffffff;
+  margin: 0px;
+  margin-left: 5px;
+  font-family: 'Roboto';
+  font-weight: 400;
+}
+
+.hr-line {
+  color: #cbd5e1;
+  width: 100%;
+  margin: 0px;
+}
+
+.location-emp-type-salary-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.location-emp-type-container {
+  display: flex;
+  align-items: center;
+}
+
+.icon-label-container {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+.location-emp-type-text {
+  color: #cbd5e1;
+  margin-left: 5px;
+  font-family: 'Roboto';
+  font-size: 13px;
+  width: 60px;
+}
+
+.salary-text {
+  color: #ffffff;
+  font-family: 'Roboto';
+}
+
+.description-heading {
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: 400;
+  font-family: 'Roboto';
+}
+
+.description {
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0px;
+}

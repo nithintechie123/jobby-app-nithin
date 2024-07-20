@@ -1,0 +1,29 @@
+.filters-container {
+  color: #ffffff;
+  list-style-type: none;
+  align-self: flex-start;
+  padding: 0px;
+}
+.filter-heading {
+  color: #ffffff;
+  font-family: 'Roboto';
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.each-filter-item {
+  display: flex;
+  align-items: center;
+  line-height: 2;
+}
+.each-filter-label {
+  margin-left: 10px;
+  font-family: 'Roboto';
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.input-element {
+  cursor: pointer;
+  width: 18px;
+}
