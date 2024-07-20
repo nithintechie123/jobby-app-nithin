@@ -240,17 +240,13 @@ class Jobs extends Component {
     </div>
   )
 
-  renderContent = () => {
-    const {apiStatus} = this.state
-    switch (apiStatus) {
-      case apiStatusConstants.success:
-        return this.renderJobItemDetails()
-      case apiStatusConstants.inProgress:
-        return this.renderLoader()
-      case apiStatusConstants.failure:
-        return this.renderFailureView()
-      default:
-        return null
+  onClickRetryButton = () => {
+    this.getProfileData()
+  }
+
+  onKeyDownSearchIcon = event => {
+    if (event.key === 'Enter') {
+      this.getJobsData()
     }
   }
 
@@ -268,13 +264,17 @@ class Jobs extends Component {
     }
   }
 
-  onClickRetryButton = () => {
-    this.getProfileData()
-  }
-
-  onKeyDownSearchIcon = event => {
-    if (event.key === 'Enter') {
-      this.getJobsData()
+  renderContent = () => {
+    const {apiStatus} = this.state
+    switch (apiStatus) {
+      case apiStatusConstants.success:
+        return this.renderJobItemDetails()
+      case apiStatusConstants.inProgress:
+        return this.renderLoader()
+      case apiStatusConstants.failure:
+        return this.renderFailureView()
+      default:
+        return null
     }
   }
 

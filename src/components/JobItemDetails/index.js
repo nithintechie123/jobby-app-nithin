@@ -1,6 +1,6 @@
 import {Component} from 'react'
 
-import {Loader} from 'react-loader-spinner'
+import Loader from 'react-loader-spinner'
 
 import Cookies from 'js-cookie'
 
@@ -13,20 +13,20 @@ import Header from '../Header'
 
 import './index.css'
 
-const apiStatusConstants = {
+const apiConstants = {
   initial: 'INITIAL',
   success: 'SUCCESS',
   failure: 'FAILURE',
   inProgress: 'INPROGRESS',
 }
 
-class DetailedJobItem extends Component {
+class JobItemDetails extends Component {
   state = {
     eachJobDetailsList: [],
     similarJobsList: [],
     lifeAtCompanyList: [],
     skillsList: [],
-    apiStatus: apiStatusConstants.initial,
+    apiStatus: apiConstants.initial,
   }
 
   componentDidMount() {
@@ -34,7 +34,7 @@ class DetailedJobItem extends Component {
   }
 
   getDetailedJobData = async () => {
-    this.setState({apiStatus: apiStatusConstants.inProgress})
+    this.setState({apiStatus: apiConstants.inProgress})
     const {match} = this.props
     const {params} = match
     const {id} = params
@@ -51,50 +51,50 @@ class DetailedJobItem extends Component {
 
     const response = await fetch(apiUrl, options)
 
+    const data = await response.json()
+
+    const updatedJobDetailsList = {
+      companyLogoUrl: data.job_details.company_logo_url,
+      companyWebsiteUrl: data.job_details.company_website_url,
+      employmentType: data.job_details.employment_type,
+      id: data.job_details.id,
+      jobDescription: data.job_details.job_description,
+      location: data.job_details.location,
+      rating: data.job_details.rating,
+      title: data.job_details.title,
+      packagePerAnnum: data.job_details.package_per_annum,
+    }
+
+    const updatedLifeAtCompanyList = {
+      description: data.job_details.life_at_company.description,
+      imageUrl: data.job_details.life_at_company.image_url,
+    }
+
+    const updatedSkillsList = data.job_details.skills.map(eachSkill => ({
+      imageUrl: eachSkill.image_url,
+      name: eachSkill.name,
+    }))
+
+    const updatedSimilarJobsList = data.similar_jobs.map(eachSimilarJob => ({
+      companyLogoUrl: eachSimilarJob.company_logo_url,
+      id: eachSimilarJob.id,
+      employmentType: eachSimilarJob.employment_type,
+      jobDescription: eachSimilarJob.job_description,
+      location: eachSimilarJob.location,
+      rating: eachSimilarJob.rating,
+      title: eachSimilarJob.title,
+    }))
+
     if (response.ok === true) {
-      const data = await response.json()
-
-      const updatedJobDetailsList = {
-        companyLogoUrl: data.job_details.company_logo_url,
-        companyWebsiteUrl: data.job_details.company_website_url,
-        employmentType: data.job_details.employment_type,
-        id: data.job_details.id,
-        jobDescription: data.job_details.job_description,
-        location: data.job_details.location,
-        rating: data.job_details.rating,
-        title: data.job_details.title,
-        packagePerAnnum: data.job_details.package_per_annum,
-      }
-
-      const updatedLifeAtCompanyList = {
-        description: data.job_details.life_at_company.description,
-        imageUrl: data.job_details.life_at_company.image_url,
-      }
-
-      const updatedSkillsList = data.job_details.skills.map(eachSkill => ({
-        imageUrl: eachSkill.image_url,
-        name: eachSkill.name,
-      }))
-
-      const updatedSimilarJobsList = data.similar_jobs.map(eachSimilarJob => ({
-        companyLogoUrl: eachSimilarJob.company_logo_url,
-        id: eachSimilarJob.id,
-        employmentType: eachSimilarJob.employment_type,
-        jobDescription: eachSimilarJob.job_description,
-        location: eachSimilarJob.location,
-        rating: eachSimilarJob.rating,
-        title: eachSimilarJob.title,
-      }))
-
       this.setState({
         similarJobsList: updatedSimilarJobsList,
         eachJobDetailsList: updatedJobDetailsList,
         lifeAtCompanyList: updatedLifeAtCompanyList,
         skillsList: updatedSkillsList,
-        apiStatus: apiStatusConstants.success,
+        apiStatus: apiConstants.success,
       })
     } else {
-      this.setState({apiStatus: apiStatusConstants.failure})
+      this.setState({apiStatus: apiConstants.failure})
     }
   }
 
@@ -150,7 +150,7 @@ class DetailedJobItem extends Component {
               <div className="sim-job-logo-title-rating-container">
                 <img
                   src={eachSimilarJob.companyLogoUrl}
-                  alt="company logo"
+                  alt="similar job company logo"
                   className="sim-job-company-logo"
                 />
                 <div className="sim-job-title-rating-container">
@@ -191,29 +191,6 @@ class DetailedJobItem extends Component {
       </div>
     )
   }
-
-  renderLoader = () => (
-    <div className="loader-container" data-testid="loader">
-      <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
-    </div>
-  )
-
-  renderFailureView = () => (
-    <div className="failure-container">
-      <img
-        src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
-        alt="failure view"
-        className="failure-view-image"
-      />
-      <h1 className="failure-view-heading">Oops! Something Went Wrong</h1>
-      <p className="failure-view-description">
-        We cannot seem to find the page you are looking for
-      </p>
-      <button type="button" className="retry-button">
-        Retry
-      </button>
-    </div>
-  )
 
   renderJobDetails = () => {
     const {eachJobDetailsList} = this.state
@@ -271,29 +248,56 @@ class DetailedJobItem extends Component {
     )
   }
 
-  renderJobDetailsContent = () => {
+  renderLoader = () => (
+    <div className="loader-container" data-testid="loader">
+      <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
+    </div>
+  )
+
+  renderFailureViewContent = () => (
+    <div className="failure-container">
+      <img
+        src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
+        alt="failure view"
+        className="failure-view-image"
+      />
+      <h1 className="failure-view-heading">Oops! Something Went Wrong</h1>
+      <p className="failure-view-description">
+        We cannot seem to find the page you are looking for
+      </p>
+      <button
+        type="button"
+        className="retry-button"
+        onClick={this.getDetailedJobData}
+      >
+        Retry
+      </button>
+    </div>
+  )
+
+  renderBasedOnApiStatus = () => {
     const {apiStatus} = this.state
+
     switch (apiStatus) {
-      case apiStatusConstants.success:
+      case apiConstants.success:
         return this.renderJobDetails()
-      case apiStatusConstants.inProgress:
+      case apiConstants.failure:
+        return this.renderFailureViewContent()
+      case apiConstants.inProgress:
         return this.renderLoader()
-      case apiStatusConstants.failure:
-        return this.renderFailureView()
       default:
         return null
     }
   }
 
   render() {
-    console.log('rendered successfully')
     return (
-      <>
+      <div className="each-item-container">
         <Header />
-        {this.renderJobDetailsContent()}
-      </>
+        {this.renderBasedOnApiStatus()}
+      </div>
     )
   }
 }
 
-export default DetailedJobItem
+export default JobItemDetails
