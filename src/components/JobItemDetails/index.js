@@ -51,41 +51,41 @@ class JobItemDetails extends Component {
 
     const response = await fetch(apiUrl, options)
 
-    const data = await response.json()
-
-    const updatedJobDetailsList = {
-      companyLogoUrl: data.job_details.company_logo_url,
-      companyWebsiteUrl: data.job_details.company_website_url,
-      employmentType: data.job_details.employment_type,
-      id: data.job_details.id,
-      jobDescription: data.job_details.job_description,
-      location: data.job_details.location,
-      rating: data.job_details.rating,
-      title: data.job_details.title,
-      packagePerAnnum: data.job_details.package_per_annum,
-    }
-
-    const updatedLifeAtCompanyList = {
-      description: data.job_details.life_at_company.description,
-      imageUrl: data.job_details.life_at_company.image_url,
-    }
-
-    const updatedSkillsList = data.job_details.skills.map(eachSkill => ({
-      imageUrl: eachSkill.image_url,
-      name: eachSkill.name,
-    }))
-
-    const updatedSimilarJobsList = data.similar_jobs.map(eachSimilarJob => ({
-      companyLogoUrl: eachSimilarJob.company_logo_url,
-      id: eachSimilarJob.id,
-      employmentType: eachSimilarJob.employment_type,
-      jobDescription: eachSimilarJob.job_description,
-      location: eachSimilarJob.location,
-      rating: eachSimilarJob.rating,
-      title: eachSimilarJob.title,
-    }))
-
     if (response.ok === true) {
+      const data = await response.json()
+
+      const updatedJobDetailsList = {
+        companyLogoUrl: data.job_details.company_logo_url,
+        companyWebsiteUrl: data.job_details.company_website_url,
+        employmentType: data.job_details.employment_type,
+        id: data.job_details.id,
+        jobDescription: data.job_details.job_description,
+        location: data.job_details.location,
+        rating: data.job_details.rating,
+        title: data.job_details.title,
+        packagePerAnnum: data.job_details.package_per_annum,
+      }
+
+      const updatedLifeAtCompanyList = {
+        description: data.job_details.life_at_company.description,
+        imageUrl: data.job_details.life_at_company.image_url,
+      }
+
+      const updatedSkillsList = data.job_details.skills.map(eachSkill => ({
+        imageUrl: eachSkill.image_url,
+        name: eachSkill.name,
+      }))
+
+      const updatedSimilarJobsList = data.similar_jobs.map(eachSimilarJob => ({
+        companyLogoUrl: eachSimilarJob.company_logo_url,
+        id: eachSimilarJob.id,
+        employmentType: eachSimilarJob.employment_type,
+        jobDescription: eachSimilarJob.job_description,
+        location: eachSimilarJob.location,
+        rating: eachSimilarJob.rating,
+        title: eachSimilarJob.title,
+      }))
+
       this.setState({
         similarJobsList: updatedSimilarJobsList,
         eachJobDetailsList: updatedJobDetailsList,
@@ -192,6 +192,27 @@ class JobItemDetails extends Component {
     )
   }
 
+  renderFailureViewContent = () => (
+    <div className="failure-container">
+      <img
+        src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
+        alt="failure view"
+        className="failure-view-image"
+      />
+      <h1 className="failure-view-heading">Oops! Something Went Wrong</h1>
+      <p className="failure-view-description">
+        We cannot seem to find the page you are looking for
+      </p>
+      <button
+        type="button"
+        className="retry-button"
+        onClick={this.getDetailedJobData}
+      >
+        Retry
+      </button>
+    </div>
+  )
+
   renderJobDetails = () => {
     const {eachJobDetailsList} = this.state
     return (
@@ -251,27 +272,6 @@ class JobItemDetails extends Component {
   renderLoader = () => (
     <div className="detailed-loader-container" data-testid="loader">
       <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
-    </div>
-  )
-
-  renderFailureViewContent = () => (
-    <div className="failure-container">
-      <img
-        src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
-        alt="failure view"
-        className="failure-view-image"
-      />
-      <h1 className="failure-view-heading">Oops! Something Went Wrong</h1>
-      <p className="failure-view-description">
-        We cannot seem to find the page you are looking for
-      </p>
-      <button
-        type="button"
-        className="retry-button"
-        onClick={this.getDetailedJobData}
-      >
-        Retry
-      </button>
     </div>
   )
 
